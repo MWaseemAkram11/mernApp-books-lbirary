@@ -1,5 +1,4 @@
 import React from 'react';
-import "./completed.css";
 import Cards from "../Cards"
 
 const Completed = () => {
