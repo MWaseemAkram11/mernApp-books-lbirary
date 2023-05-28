@@ -1,0 +1,41 @@
+/* slider.css */
+.slider-parent{
+    width: 87%;
+    padding: 10px;
+    border: 2px solid grey;
+    margin-left: 7%;
+    margin-top: 20px;
+}
+.slider {
+    width: 100%;
+    overflow: hidden;
+    padding: 20px;
+  }
+  .slider-a{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 5px;
+    margin-bottom: 10px;
+    font-size: xx-large;
+  }
+  .slider-a button {
+    background: rgb(2, 17, 8);
+    color: white;
+    padding: 4px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .slide {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    justify-content: space-evenly;
+  }
+  
+  .slide img {
+    width: 100%;
+  }
+  .cards-child {
+    border: 4px solid rgb(2, 17, 8);
+    padding: 8px;
+  }
