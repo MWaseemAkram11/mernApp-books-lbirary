@@ -158,7 +158,7 @@ const AddBooks = () => {
                 <textarea style={{resize:"none", height:"100px", width:"300px"}} name='description' placeholder='description here' onChange={handleChange}/>
             </div>
             <div className='form-childs'>
-                <button className='btn' type="button"  >
+                <button className='btn' type="submit"  >
                     Add Book
                 </button>
             </div>
