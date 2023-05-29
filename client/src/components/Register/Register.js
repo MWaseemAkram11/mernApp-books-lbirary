@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import network from '../../utils/network';
 import Swal from 'sweetalert2';
 import "./Register.css";
@@ -8,7 +9,7 @@ import "./Register.css";
 const Register = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name:'', email:'', passowrd:''
+    name:'', email:'', password:''
   })
 
   const [errors, setErrors] = useState('');
@@ -41,14 +42,11 @@ const Register = () => {
     if (!regexEmail.test(email)){
       newErrors.email = 'please enter valid email';
     }
-    if(name === ''){
+   if(name === ''){
       newErrors.name = 'please enter your name'
     }
-    if (password === ''){
+   if (password === ''){
       newErrors.password = 'please enter your password';
-    }
-    if (password.length > 8 || password.length < 8){
-      newErrors.password = 'please enter valid password';
     }
     setErrors(newErrors);
   }
@@ -68,7 +66,7 @@ const Register = () => {
   const handleSignup = (e) => {
     e.preventDefault();
     const validate = handleValidation();
-    if(validate){
+    if(errors && Object.keys(errors).length === 0){
       fetch(network.baseUrl + "/register", requestOptions)
       .then((response) => response.json())
       .then((result) => {
@@ -89,9 +87,8 @@ const Register = () => {
               text: 'Something went wrong!',
           })
       });
-    }
   }
-
+  }
   return (
     <div className="signup">
       <h2>Sign Up</h2>
@@ -105,6 +102,7 @@ const Register = () => {
             value={formData.name}
             onChange={handleChange}
           />
+          <span style={{color:"red"}}>{errors.name ? errors.name : ""}</span>
         </div>
         <div className='form-childs'>
           <span>Email:</span>
@@ -115,25 +113,28 @@ const Register = () => {
             value={formData.email}
             onChange={handleChange}
           />
+          <span style={{color:"red"}}>{errors.email ? errors.email : ""}</span>
+
         </div>
         <div className='form-childs'>
           <span>Password:</span>
-          <input
-            type="password"
+          <input type="password" 
             name='password'
             placeholder="Password"
-            value={formData.passowrd}
+            value={formData.password}
             onChange={handleChange}
           />
+          <span style={{color:"red"}}>{errors.password ? errors.password : ""}</span>
+
         </div>
         <div className='form-childs'>
-          <button className='btn' type="submit">
+          <button className='btn' type="submit" value='submit'>
             Sign Up
           </button>
         </div>
       </form>
     </div>
   );
-};
+  };
 
-export default Register;
+export default Register

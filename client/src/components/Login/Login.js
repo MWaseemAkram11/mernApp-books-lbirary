@@ -51,12 +51,13 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     const validate = handleValidation();
-    if(validate){
+    if(errors && Object.keys(errors).length === 0){
       fetch(network.baseUrl + "/login", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
         if (result.success == true) {
+          const tok = localStorage.setItem('autToken', json.stringify(result?.token))
           Swal.fire(
               'Good job!',
               'You has ben loggedIn!',

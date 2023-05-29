@@ -37,7 +37,7 @@ const AddBooks = () => {
     }
 
     useEffect(() =>{
-        var userToken = localStorage.getItem("autToken");
+        var userToken = localStorage.getItem("auth-token");
         if(userToken){
             setuserAuthToken(userToken)
         } 
@@ -99,7 +99,7 @@ const AddBooks = () => {
     }
 
     var myHeaders = new Headers();
-    myHeaders.append("x-auth-token", userAuthToken);
+    myHeaders.append("auth-token", userAuthToken);
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify(formData);
@@ -113,7 +113,7 @@ const AddBooks = () => {
     const addBookData = async (e) =>{
         e.preventDefault();
         const validate = await handleValidation();
-        if(validate){
+        if(errors && Object.keys(errors).length === 0){
             fetch(network.baseUrl + "/add", requestOptions)
             .then((response) => response.json())
             .then((result) => {
