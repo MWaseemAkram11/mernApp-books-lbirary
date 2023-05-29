@@ -1,5 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import "./cards.css";
 
 function BasicExample() {
   return (
@@ -12,7 +13,15 @@ function BasicExample() {
           Some quick example text to build on the card title and make up the
           bulk of the card's content.
           </Card.Text>
-          <Button variant="primary">Go somewhere</Button>
+          <div class="dropdown">
+            <button class="dropbtn">Click to Update</button>
+            <div class="dropdown-content">
+              <a href="#">add to complete</a>
+              <a href="#">add to plan toRead</a>
+              <a href="#">add to reading</a>
+            </div>
+          </div>
+          {/* <Button variant="primary">Go somewhere</Button> */}
         </Card.Body>
         </Card>
     </div>
