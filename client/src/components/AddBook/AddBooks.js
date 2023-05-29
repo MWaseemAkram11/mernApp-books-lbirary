@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import network from '../../utils/network';
 import Swal from 'sweetalert2';
 
 const AddBooks = () => {
+    const navigate = useNavigate();
     const [image, setImage] = useState('');
     const [formData, setformData] = {
         bookName:'', authorName:'', description:''
@@ -101,6 +103,7 @@ const AddBooks = () => {
                     'Your has been added!',
                     'success'
                 );
+                navigate("/");
               }
             })
             .catch((error) => {
