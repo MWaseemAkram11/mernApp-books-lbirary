@@ -3,9 +3,21 @@ import network from '../../utils/network';
 import "./Login.css"
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormdata] = useState({
+    email:'', password:''
+  })
   const [errors, setErrors] = useState('');
+
+  const handleChange = () =>{
+    const {name, value} = e.target;
+    if(name === "email"){
+      setFormData({...formData, email:e.target.value});
+      setErrors({...errors, email:''})
+    } else if(name === "password"){
+      setFormData({...formData, password:e.target.value});
+      setErrors({...errors, password:''})
+    }
+  }
 
   const handleValidation = () =>{
     const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -22,18 +34,17 @@ const Login = () => {
       setErrors(newErrors);
   }
 
-  var raw = JSON.stringify({
-    email:email,password:password
-  });
+  var raw = JSON.stringify(formData);
     
   var requestOptions = {
     method: "POST",
     headers: myHeaders,
     body: raw,
-};
+  };
 
-  const handleLogin = async () => {
-    const validate = await handleValidation();
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const validate = handleValidation();
     if(validate){
       fetch(network.baseUrl + "/login", requestOptions)
       .then((response) => response.json())
@@ -64,14 +75,15 @@ const Login = () => {
     <>
      <div className="signup">
       <h2>Login</h2>
-      <form>
+      <form onSubmit={handleLogin}>
         <div className='form-childs'>
           <span>Email:</span>
           <input
             type="email"
             placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name='email'
+            value={formData.email}
+            onChange={handleChange}
           />
         </div>
         <div className='form-childs'>
@@ -79,12 +91,13 @@ const Login = () => {
           <input
             type="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name='password'
+            value={formData.password}
+            onChange={handleChange}
           />
         </div>
         <div className='form-childs'>
-          <button className='btn' type="button" onClick={handleLogin}>
+          <button className='btn' type="submit">
             Login
           </button>
         </div>
