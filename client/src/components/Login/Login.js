@@ -1,14 +1,18 @@
+/* eslint-disable */
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import network from '../../utils/network';
+import Swal from 'sweetalert2';
 import "./Login.css"
 
 const Login = () => {
-  const [formData, setFormdata] = useState({
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
     email:'', password:''
   })
   const [errors, setErrors] = useState('');
 
-  const handleChange = () =>{
+  const handleChange = (e) =>{
     const {name, value} = e.target;
     if(name === "email"){
       setFormData({...formData, email:e.target.value});
@@ -22,7 +26,7 @@ const Login = () => {
   const handleValidation = () =>{
     const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     var newErrors = {};
-    const email = email; const pwd = password;
+    const {email,password} = formData;
     if(email === '') 
       newErrors.email = 'please enter your email';
     if (!regexEmail.test(email))
@@ -34,6 +38,8 @@ const Login = () => {
       setErrors(newErrors);
   }
 
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
   var raw = JSON.stringify(formData);
     
   var requestOptions = {
@@ -68,7 +74,6 @@ const Login = () => {
         console.log("error", error);
       });
     }
-    console.log('Logging in...', email, password);
   };
 
   return (

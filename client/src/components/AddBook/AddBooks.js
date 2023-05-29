@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable */
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import network from '../../utils/network';
 import Swal from 'sweetalert2';
@@ -6,11 +7,12 @@ import Swal from 'sweetalert2';
 const AddBooks = () => {
     const navigate = useNavigate();
     const [image, setImage] = useState('');
-    const [formData, setformData] = {
+    const [formData, setformData] = useState({
         bookName:'', authorName:'', description:''
-    };
+    });
     const [errors, setErrors] = useState('');
-    const [imagLoader, setImgLoader] = useState(null);
+    const [imgLoader, setImgLoader] = useState(null);
+    const [userAuthToken, setuserAuthToken] = useState(null)
 
     const handleUpload = (e)=> {
         if (checkMimeType(e)) {
@@ -34,6 +36,21 @@ const AddBooks = () => {
           }
     }
 
+    useEffect(() =>{
+        var userToken = localStorage.getItem("autToken");
+        if(userToken){
+            setuserAuthToken(userToken)
+        } 
+        else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'You are not authorized please loggin!',
+            })
+            navigate("/login")
+        }
+    },[]);
+
     const checkMimeType = event => {
     let file = event.target.files;
     let err = '';
@@ -51,13 +68,13 @@ const AddBooks = () => {
 
     const handleChange = async (e) => {
         const {name,value} = e.target;
-        if(name === bookName){
+        if(name === "bookName"){
             setformData({...formData, bookName:e.target.value});
             setErrors({...errors, bookName:''});
-        } else if(name === authorName){
+        } else if(name === "authorName"){
             setformData({...formData, authorName:e.target.value});
             setErrors({...errors, authorName:''});
-        } else if(name === description){
+        } else if(name === "description"){
             setformData({...formData, description:e.target.value});
             setErrors({...errors, description:''});
         } 
@@ -81,15 +98,19 @@ const AddBooks = () => {
         setErrors(newErrors);
     }
 
+    var myHeaders = new Headers();
+    myHeaders.append("x-auth-token", userAuthToken);
+    myHeaders.append("Content-Type", "application/json");
+
     var raw = JSON.stringify(formData);
     
-      var requestOptions = {
+    var requestOptions = {
         method: "POST",
         headers: myHeaders,
         body: raw,
     };
 
-    const addBookData = async () =>{
+    const addBookData = async (e) =>{
         e.preventDefault();
         const validate = await handleValidation();
         if(validate){
@@ -123,15 +144,15 @@ const AddBooks = () => {
             <div className='form-childs'>
                 <span>Book Name:</span>
                 <input
-                type="text"
-                placeholder="book name" name='bookName' onChange={handleChange}
+                    type="text"
+                    placeholder="book name" name='bookName' value={formData.bookName} onChange={handleChange}
                 />
             </div>
             <div className='form-childs'>
                 <span>Author Name:</span>
                 <input
-                type="input"
-                placeholder="author name" name="authorName" onChange={handleChange}
+                    type="input"
+                    placeholder="author name" name="authorName" value={formData.authorName} onChange={handleChange}
                 />
             </div>
             <div className='form-childs'>

@@ -1,8 +1,12 @@
+/* eslint-disable */
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import network from '../../utils/network';
+import Swal from 'sweetalert2';
 import "./Register.css";
 
 const Register = () => {
-
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name:'', email:'', passowrd:''
   })
@@ -29,16 +33,16 @@ const Register = () => {
     const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
     if(name === ''){
-      newErrors.name === 'please enter your name'
+      newErrors.name = 'please enter your name'
     }
     if(email === ''){
-      newErrors.email === 'please enter your email'
+      newErrors.email = 'please enter your email'
     }
     if (!regexEmail.test(email)){
       newErrors.email = 'please enter valid email';
     }
     if(name === ''){
-      newErrors.name === 'please enter your name'
+      newErrors.name = 'please enter your name'
     }
     if (password === ''){
       newErrors.password = 'please enter your password';
@@ -48,6 +52,10 @@ const Register = () => {
     }
     setErrors(newErrors);
   }
+
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  var raw = JSON.stringify(formData);
 
   var raw = JSON.stringify(formData);
     
@@ -65,7 +73,7 @@ const Register = () => {
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
-        if (result.success == true) {
+        if (result.success === true) {
           Swal.fire(
               'Good job!',
               'You has been registered!',
